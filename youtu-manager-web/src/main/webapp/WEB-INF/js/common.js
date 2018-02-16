@@ -102,7 +102,7 @@ var TT = TAOTAO = {
     	});
     },
     
-    // 初始化选择类目组件
+ // 初始化选择类目组件
     initItemCat : function(data){
     	$(".selectItemCat").each(function(i,e){
     		var _ele = $(e);
@@ -111,26 +111,31 @@ var TT = TAOTAO = {
     		}else{
     			_ele.after("<span style='margin-left:10px;'></span>");
     		}
+    		//这里解绑了之后重新绑定click事件
     		_ele.unbind('click').click(function(){
     			$("<div>").css({padding:"5px"}).html("<ul>")
-    			.window({
+    			.window({//初始化一个窗口，也就是弹出一个新的小窗口
     				width:'500',
     			    height:"450",
     			    modal:true,
     			    closed:true,
     			    iconCls:'icon-save',
     			    title:'选择类目',
-    			    onOpen : function(){
+    			    onOpen : function(){//窗口打开时执行以下代码
     			    	var _win = this;
-    			    	$("ul",_win).tree({
+    			    	$("ul",_win).tree({//EasyUI的异步tree的初始化,url为/item/cat/list
     			    		url:'/item/cat/list',
     			    		animate:true,
-    			    		onClick : function(node){
-    			    			if($(this).tree("isLeaf",node.target)){
-    			    				// 填写到cid中
+    			    		onClick : function(node){//这里是点击任意一个结点时的事件
+    			    			//这里只定义了叶子节点的click事件，非叶子节点的点击事件EasyUI默认实现了
+    			    			if($(this).tree("isLeaf",node.target)){//先判断是否是叶子节点
+    			    				// 将最后选择的类目的id填写到item-add.jsp中的cid文本框中，当作最后保存的数据
     			    				_ele.parent().find("[name=cid]").val(node.id);
+    			    				//这个把选择的类目的名称显示到页面上
     			    				_ele.next().text(node.text).attr("cid",node.id);
+    			    				//然后关闭小窗口
     			    				$(_win).window('close');
+    			    				//如果传来的参数有回调方法，则调用
     			    				if(data && data.fun){
     			    					data.fun.call(this,node);
     			    				}
