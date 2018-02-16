@@ -1,12 +1,14 @@
 package com.youtu.controller;
 
+import java.io.UnsupportedEncodingException;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sun.tools.internal.xjc.generator.bean.ImplStructureStrategy.Result;
 import com.youtu.common.pojo.EasyUIDateGridResult;
 import com.youtu.pojo.TbItem;
 import com.youtu.service.ItemService;
@@ -28,11 +30,22 @@ public class ItemController {
 			TbItem tbItem = itemService.getItemById(itemId);
 			return tbItem;
 		}
+		/**
+		 * 查询出所有商品信息，展示商品列表
+		 * id和title是过滤条件
+		 * @param page
+		 * @param rows
+		 * @return
+		 * @throws UnsupportedEncodingException 
+		 */
 		@RequestMapping("/item/list")
 		@ResponseBody
-		public EasyUIDateGridResult getItemList(Integer page, Integer rows){
-			itemService.getItemList(page, rows);
-			EasyUIDateGridResult result = itemService.getItemList(page, rows);						
+		public EasyUIDateGridResult getItemList(Integer page, Integer rows,Long id,String title) throws UnsupportedEncodingException {
+			//解决乱码问题，tomcat默认是iso8859-1的编码
+			if(!StringUtils.isBlank(title)){
+				title = new String(title.getBytes("iso8859-1"), "utf-8");
+			}
+			EasyUIDateGridResult result = itemService.getItemList(page, rows,id,title);						
 			return result;
 		}
 	}

@@ -24,7 +24,9 @@ public class TbItem {
     private Date created;
 
     private Date updated;
-
+    
+    private String catName;
+    
     public Long getId() {
         return id;
     }
@@ -44,7 +46,9 @@ public class TbItem {
     public String getSellPoint() {
         return sellPoint;
     }
-
+    public void setCatName(String catName) {
+		this.catName = catName;
+	}
     public void setSellPoint(String sellPoint) {
         this.sellPoint = sellPoint == null ? null : sellPoint.trim();
     }
@@ -112,4 +116,8 @@ public class TbItem {
     public void setUpdated(Date updated) {
         this.updated = updated;
     }
+
+	public String getCatName() {
+		return catName;
+	}
 }
