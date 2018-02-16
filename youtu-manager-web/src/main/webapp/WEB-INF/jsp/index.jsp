@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>淘淘商城后台管理系统</title>
+<title>优兔商城后台管理系统</title>
 <link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.4.1/themes/default/easyui.css" />
 <link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.4.1/themes/icon.css" />
 <link rel="stylesheet" type="text/css" href="css/taotao.css" />
@@ -26,6 +26,18 @@
 	         		<li data-options="attributes:{'url':'item-add'}">新增商品</li>
 	         		<li data-options="attributes:{'url':'item-list'}">查询商品</li>
 	         		<li data-options="attributes:{'url':'item-param-list'}">规格参数</li>
+	         	</ul>
+         	</li>
+         	<li>
+         		<span>订单信息管理</span>
+         		<ul>
+	         		<li data-options="attributes:{'url':'order-list'}">订单管理</li>
+	         	</ul>
+         	</li>
+         	<li>
+         		<span>用户信息管理</span>
+         		<ul>
+	         		<li data-options="attributes:{'url':'content'}">用户信息管理</li>
 	         	</ul>
          	</li>
          	<li>
