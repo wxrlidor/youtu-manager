@@ -2,6 +2,7 @@
 
 package com.youtu.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.youtu.common.pojo.EasyUIDateGridResult;
+import com.youtu.common.pojo.YouTuResult;
+import com.youtu.common.utils.IDUtils;
 import com.youtu.mapper.TbItemCatMapper;
 import com.youtu.mapper.TbItemDescMapper;
 import com.youtu.mapper.TbItemMapper;
@@ -18,6 +21,7 @@ import com.youtu.mapper.TbItemParamItemMapper;
 import com.youtu.pojo.TbItem;
 import com.youtu.pojo.TbItemCat;
 import com.youtu.pojo.TbItemCatExample;
+import com.youtu.pojo.TbItemDesc;
 import com.youtu.pojo.TbItemExample;
 import com.youtu.pojo.TbItemExample.Criteria;
 import com.youtu.service.ItemService;
@@ -121,5 +125,51 @@ public class ItemServiceImpl implements ItemService {
 		result.setTotal(sum);
 		return result;
 	}
+	/**
+	 * 新增商品
+	 * 
+	 * @throws Exception
+	 */
+	@Override
+	public YouTuResult createItem(TbItem tbItem, String desc, String itemParams) throws Exception {
+		// 先补全tbItem
+		tbItem.setId(IDUtils.genItemId());
+		tbItem.setStatus((byte) 1);
+		tbItem.setCreated(new Date());
+		tbItem.setUpdated(new Date());
+		// 保存到数据库中
+		itemMapper.insert(tbItem);
+		// 添加商品描述
+		YouTuResult result = addDesc(tbItem.getId(), desc);
+		if (result.getStatus() != 200) {
+			// 这里抛出异常，spring就会知道出错，进行事务回滚
+			throw new Exception();
+		}
+		// 保存规格参数
+		//result = insertItemParamItem(tbItem.getId(), itemParams);
+		if (result.getStatus() != 200) {
+			// 这里抛出异常，spring就会知道出错，进行事务回滚
+			throw new Exception();
+		}
+		// 返回结果
+		return YouTuResult.ok();
+	}
 
+	/**
+	 * 添加商品描述
+	 * 
+	 * @param tbitem
+	 * @param desc
+	 * @return
+	 */
+	private YouTuResult addDesc(long itemId, String desc) {
+		// 创建pojo对象，补全信息
+		TbItemDesc tbItemDesc = new TbItemDesc();
+		tbItemDesc.setCreated(new Date());
+		tbItemDesc.setItemDesc(desc);
+		tbItemDesc.setItemId(itemId);
+		tbItemDesc.setUpdated(new Date());
+		tbItemDescMapper.insert(tbItemDesc);
+		return YouTuResult.ok();
+	}
 }

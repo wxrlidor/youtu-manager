@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.youtu.common.pojo.EasyUIDateGridResult;
+import com.youtu.common.pojo.YouTuResult;
 import com.youtu.pojo.TbItem;
 import com.youtu.service.ItemService;
 
@@ -46,6 +48,20 @@ public class ItemController {
 				title = new String(title.getBytes("iso8859-1"), "utf-8");
 			}
 			EasyUIDateGridResult result = itemService.getItemList(page, rows,id,title);						
+			return result;
+		}
+		/**
+		 * 新增商品,同时保存规格参数的数据
+		 * @param item
+		 * @param desc
+		 * @param itemParams
+		 * @return
+		 * @throws Exception
+		 */
+		@RequestMapping(value="/item/save", method=RequestMethod.POST)
+		@ResponseBody
+		private YouTuResult createItem(TbItem item,String desc,String itemParams)  throws Exception {
+			YouTuResult result = itemService.createItem(item,desc,itemParams);
 			return result;
 		}
 	}
