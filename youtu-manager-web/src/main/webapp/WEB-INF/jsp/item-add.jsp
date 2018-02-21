@@ -8,9 +8,16 @@
 	        <tr>
 	            <td>商品类目:</td>
 	            <td>
+	            	<!-- 这个事件是在common.js中定义绑定的 -->
 	            	<a href="javascript:void(0)" class="easyui-linkbutton selectItemCat">选择类目</a>
 	            	<input type="hidden" name="cid" style="width: 280px;"></input>
 	            </td>
+	        </tr>
+	        <tr class="params hide">
+	        	<td>商品规格:</td>
+	        	<td>
+	        		
+	        	</td>
 	        </tr>
 	        <tr>
 	            <td>商品标题:</td>
@@ -49,12 +56,7 @@
 	                <textarea style="width:800px;height:300px;visibility:hidden;" name="desc"></textarea>
 	            </td>
 	        </tr>
-	        <tr class="params hide">
-	        	<td>商品规格:</td>
-	        	<td>
-	        		
-	        	</td>
-	        </tr>
+	        
 	    </table>
 	    <input type="hidden" name="itemParams"/>
 	</form>
