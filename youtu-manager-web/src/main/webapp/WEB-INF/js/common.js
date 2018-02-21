@@ -193,7 +193,7 @@ var TT = TAOTAO = {
     closeCurrentWindow : function(){
     	$(".panel-tool-close").click();
     },
-    
+  //添加商品时，当类目变化时调用此方法，用于调用规格参数模版并生成表单
     changeItemParam : function(node,formId){
     	$.getJSON("/item/param/query/itemcatid/" + node.id,function(data){
 			  if(data.status == 200 && data.data){
