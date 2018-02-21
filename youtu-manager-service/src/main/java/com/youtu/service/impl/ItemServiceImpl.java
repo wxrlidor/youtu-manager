@@ -68,8 +68,8 @@ public class ItemServiceImpl implements ItemService {
 				result.setRows(list);
 				//取记录总条数
 				PageInfo<TbItem> pageInfo = new PageInfo<>(list);
-				result.setTotal(pageInfo.getTotal());
-				return result;
+		result.setTotal(pageInfo.getTotal());
+		return result;
 	}
 
 }
