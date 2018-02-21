@@ -24,6 +24,7 @@ import com.youtu.pojo.TbItemCatExample;
 import com.youtu.pojo.TbItemDesc;
 import com.youtu.pojo.TbItemExample;
 import com.youtu.pojo.TbItemExample.Criteria;
+import com.youtu.pojo.TbItemParamItem;
 import com.youtu.service.ItemService;
 
 /**
@@ -146,7 +147,7 @@ public class ItemServiceImpl implements ItemService {
 			throw new Exception();
 		}
 		// 保存规格参数
-		//result = insertItemParamItem(tbItem.getId(), itemParams);
+		result = insertItemParamItem(tbItem.getId(), itemParams);
 		if (result.getStatus() != 200) {
 			// 这里抛出异常，spring就会知道出错，进行事务回滚
 			throw new Exception();
@@ -171,5 +172,24 @@ public class ItemServiceImpl implements ItemService {
 		tbItemDesc.setUpdated(new Date());
 		tbItemDescMapper.insert(tbItemDesc);
 		return YouTuResult.ok();
+	}
+	/**
+	 * 保存规格参数
+	 * 
+	 * @param itemId
+	 * @param itemParams
+	 * @return
+	 */
+	private YouTuResult insertItemParamItem(long itemId, String itemParams) {
+		// 创建pojo对象，补全信息
+		TbItemParamItem tbItemParamItem = new TbItemParamItem();
+		tbItemParamItem.setItemId(itemId);
+		tbItemParamItem.setParamData(itemParams);
+		tbItemParamItem.setCreated(new Date());
+		tbItemParamItem.setUpdated(new Date());
+		tbItemParamItemMapper.insert(tbItemParamItem);
+
+		return YouTuResult.ok();
+
 	}
 }
