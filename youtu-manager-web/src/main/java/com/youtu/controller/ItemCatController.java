@@ -30,7 +30,7 @@ public class ItemCatController {
 	 */
 	@RequestMapping("/list")
 	@ResponseBody
-	public List<EUTreeNode> getCatList(@RequestParam(value="id",defaultValue="0") long parentId){
-		return itemCatService.getCatList(parentId);
+	public List<EUTreeNode> getCatList(@RequestParam(value="id",defaultValue="0") Long parentId, String name){
+		return itemCatService.getCatList(parentId,name);
 	}
 }

@@ -601,6 +601,11 @@ public class TbContentCategoryExample {
         protected Criteria() {
             super();
         }
+
+		public void andCategoryIdEqualTo(long contentCid) {
+			// TODO Auto-generated method stub
+			
+		}
     }
 
     public static class Criterion {

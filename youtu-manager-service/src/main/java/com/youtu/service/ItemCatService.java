@@ -10,5 +10,5 @@ import java.util.List;
 import com.youtu.common.pojo.EUTreeNode;
 
 public interface ItemCatService {
-	List<EUTreeNode> getCatList(long parentId);
+	List<EUTreeNode> getCatList(Long parentId, String name);
 }

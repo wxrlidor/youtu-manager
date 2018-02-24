@@ -26,7 +26,7 @@ public class ItemCatServiceImpl implements ItemCatService {
 	 * 商品类目展示：根据parentId，返回所有子节点数据
 	 */
 	@Override
-	public List<EUTreeNode> getCatList(long parentId) {
+	public List<EUTreeNode> getCatList(Long parentId, String name) {
 		//创建查询条件
 		TbItemCatExample tbItemCatExample = new TbItemCatExample();
 		Criteria criteria = tbItemCatExample.createCriteria();

@@ -53,7 +53,9 @@
 <script type="text/javascript">
 	var contentAddEditor ;
 	$(function(){
+		//创建服务编辑器
 		contentAddEditor = TT.createEditor("#contentAddForm [name=content]");
+		//初始化单图片的上传
 		TT.initOnePicUpload();
 		$("#contentAddForm [name=categoryId]").val($("#contentCategoryTree").tree("getSelected").id);
 	});
@@ -64,6 +66,7 @@
 					$.messager.alert('提示','表单还未填写完成!');
 					return ;
 				}
+				//同步父文本编辑器
 				contentAddEditor.sync();
 				
 				$.post("/content/save",$("#contentAddForm").serialize(), function(data){
