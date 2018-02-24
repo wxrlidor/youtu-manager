@@ -17,6 +17,10 @@ public class TbUser {
 
     private Date updated;
 
+    private String nickname;
+
+    private Byte status;
+
     public Long getId() {
         return id;
     }
@@ -71,5 +75,21 @@ public class TbUser {
 
     public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname == null ? null : nickname.trim();
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 }

@@ -37,7 +37,7 @@
          	<li>
          		<span>用户信息管理</span>
          		<ul>
-	         		<li data-options="attributes:{'url':'content'}">用户信息管理</li>
+	         		<li data-options="attributes:{'url':'user-list'}">用户信息管理</li>
 	         	</ul>
          	</li>
          	<li>

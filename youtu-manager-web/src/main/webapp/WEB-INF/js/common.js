@@ -55,7 +55,15 @@ var TT = TAOTAO = {
         	return '未知';
         }
     },
-    
+    formatUserStatus : function formatStatus(val,row){
+        if (val == 1){
+            return '启用';
+        } else if(val == 2){
+        	return '<span style="color:red;">注销</span>';
+        } else {
+        	return '未知';
+        }
+    },
     init : function(data){
     	// 初始化图片上传组件
     	this.initPicUpload(data);
