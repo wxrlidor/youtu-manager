@@ -64,4 +64,44 @@ public class ItemController {
 			YouTuResult result = itemService.createItem(item,desc,itemParams);
 			return result;
 		}
+		/**
+		 * 修改商品信息
+		 * @param item   商品实体类
+		 * @param desc   商品描述
+		 * @param itemParams  商品规格参数json数据
+		 * @param itemParamId  规格参数主键id
+		 * @param id   商品id
+		 * @param status  商品状态
+		 * @return
+		 * @throws Exception
+		 */
+		@RequestMapping(value="/rest/item/update", method=RequestMethod.POST)
+		@ResponseBody
+		private YouTuResult updateItem(TbItem item,String desc,String itemParams,String itemParamId,String id,String status)  throws Exception {
+			//先补全商品的id和状态，这里用到类型转换
+			item.setId(Long.valueOf(id));
+			item.setStatus((byte)Integer.valueOf(status).intValue());
+			YouTuResult result = itemService.updateItem(item,desc,itemParams,itemParamId);
+			return result;
+		}
+		/**
+		 * 根据商品id加载商品描述信息
+		 * @param itemId
+		 * @return
+		 */
+		@RequestMapping("/rest/item/query/item/desc/{itemId}")
+		@ResponseBody
+		private YouTuResult getDescByItem(@PathVariable long itemId){
+			return itemService.getDescByItemId(itemId);
+		}
+		/**
+		 * 加载规格参数
+		 * @param itemId
+		 * @return
+		 */
+		@RequestMapping("/rest/item/param/item/query/{itemId}")
+		@ResponseBody
+		private YouTuResult getParmaItemByItemId(@PathVariable long itemId){
+			return itemService.getParmaItemByItemId(itemId);
+		}
 	}

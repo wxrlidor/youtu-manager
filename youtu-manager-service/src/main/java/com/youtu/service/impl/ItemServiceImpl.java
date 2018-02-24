@@ -22,9 +22,11 @@ import com.youtu.pojo.TbItem;
 import com.youtu.pojo.TbItemCat;
 import com.youtu.pojo.TbItemCatExample;
 import com.youtu.pojo.TbItemDesc;
+import com.youtu.pojo.TbItemDescExample;
 import com.youtu.pojo.TbItemExample;
 import com.youtu.pojo.TbItemExample.Criteria;
 import com.youtu.pojo.TbItemParamItem;
+import com.youtu.pojo.TbItemParamItemExample;
 import com.youtu.service.ItemService;
 
 /**
@@ -191,5 +193,68 @@ public class ItemServiceImpl implements ItemService {
 
 		return YouTuResult.ok();
 
+	}
+	/**
+	 * 修改商品信息
+	 */
+	@Override
+	public YouTuResult updateItem(TbItem tbItem, String desc, String itemParams, String itemParamId) throws Exception {
+		// 修改更新时间
+		tbItem.setUpdated(new Date());
+		tbItem.setCreated(new Date());
+		// 根据主键id，更新商品信息
+		itemMapper.updateByPrimaryKey(tbItem);
+
+		// 更新商品描述
+		TbItemDesc tbItemDesc = new TbItemDesc();
+		// 补全描述实体类
+		tbItemDesc.setItemDesc(desc);
+		tbItemDesc.setItemId(tbItem.getId());
+		tbItemDesc.setUpdated(new Date());
+		// 根据主键id更新
+		tbItemDescMapper.updateByPrimaryKeyWithBLOBs(tbItemDesc);
+
+		// 更新商品规格参数
+		TbItemParamItem tbItemParamItem = new TbItemParamItem();
+		// 补全规格参数实体类
+		tbItemParamItem.setParamData(itemParams);
+		tbItemParamItem.setId(Long.valueOf(itemParamId));
+		tbItemParamItem.setItemId(tbItem.getId());
+		tbItemParamItem.setUpdated(new Date());
+		// 根据主键id更新
+		tbItemParamItemMapper.updateByPrimaryKeyWithBLOBs(tbItemParamItem);
+
+		return YouTuResult.ok();
+	}
+	/**
+	 * 查询商品描述
+	 */
+	@Override
+	public YouTuResult getDescByItemId(long itemId) {
+		TbItemDescExample example = new TbItemDescExample();
+		com.youtu.pojo.TbItemDescExample.Criteria criteria = example.createCriteria();
+		criteria.andItemIdEqualTo(itemId);
+		List<TbItemDesc> list = tbItemDescMapper.selectByExampleWithBLOBs(example);
+		if (list != null && list.size() > 0) {
+			// 把查询到的描述文本保存到返回结果中
+			return YouTuResult.ok(list.get(0));
+		}
+		return YouTuResult.ok();
+	}
+
+	/**
+	 * 加载商品规格参数
+	 */
+	@Override
+	public YouTuResult getParmaItemByItemId(long itemId) {
+		TbItemParamItemExample example = new TbItemParamItemExample();
+		com.youtu.pojo.TbItemParamItemExample.Criteria criteria = example.createCriteria();
+		criteria.andItemIdEqualTo(itemId);
+		List<TbItemParamItem> list = tbItemParamItemMapper.selectByExampleWithBLOBs(example);
+		if (list != null && list.size() > 0) {
+			// 把查询到的描述文本保存到返回结果中
+			return YouTuResult.ok(list.get(0));
+		}
+		return YouTuResult.ok();
 	}
 }
