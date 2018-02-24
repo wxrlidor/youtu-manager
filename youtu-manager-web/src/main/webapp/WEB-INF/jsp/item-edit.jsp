@@ -4,7 +4,9 @@
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
 <div style="padding:10px 10px 10px 10px">
 	<form id="itemeEditForm" class="itemForm" method="post">
-		<input type="hidden" name="id"/>
+		<!-- 这里把商品的数据补全，使得待会序列化时有全面的信息 -->
+	    <input type="hidden" name="id"/>
+		<input type="hidden" name="status"/>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>商品类目:</td>

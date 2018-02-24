@@ -2,6 +2,7 @@
 
 package com.youtu.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -256,5 +257,40 @@ public class ItemServiceImpl implements ItemService {
 			return YouTuResult.ok(list.get(0));
 		}
 		return YouTuResult.ok();
+	}
+	/**
+	 * 修改商品状态 参数status表示要修改的状态 1-正常，2-下架，3-删除
+	 */
+	@Override
+	public YouTuResult modifyItemsByIds(String ids, byte status) {
+		YouTuResult youTuResult = new YouTuResult(null);
+		// 传进来的ids格式为"12323,3434,3232",有多个id时以","隔开
+		// 这里使用split方法分割成字符串数组
+		String[] idArray = ids.split(",");
+		List<Long> list = new ArrayList<>();
+		// 遍历字符串数组，拷贝到list中去，因为criteria的查询条件只支持list参数
+		for (int i = 0; i < idArray.length; i++) {
+			// 这里需要用Long.parseLong(String)方法把字符串变量转换Long变量
+			list.add(Long.parseLong(idArray[i]));
+		}
+		// 创建查询条件
+		TbItemExample tbItemExample = new TbItemExample();
+		Criteria criteria = tbItemExample.createCriteria();
+		// 这里相当于添加查询语句 id in ('123232','232323','121212'),可以根据多个id查询出多个结果
+		criteria.andIdIn(list);
+		List<TbItem> itemList = itemMapper.selectByExample(tbItemExample);
+		// 遍历查询出来的结果，修改为删除
+		for (TbItem tbItem : itemList) {
+			// 设置status属性为3，即删除
+			tbItem.setStatus(status);
+			// 同时设置更新时间
+			tbItem.setUpdated(new Date());
+			// 然后再进行保存操作,更新方法会返回值,成功时返回受影响的行数
+			int result = itemMapper.updateByPrimaryKey(tbItem);
+			if (result < 1) {// 说明更新失败,返回状态设置为非200
+				youTuResult.setStatus(100);
+			}
+		}
+		return youTuResult;
 	}
 }

@@ -104,4 +104,37 @@ public class ItemController {
 		private YouTuResult getParmaItemByItemId(@PathVariable long itemId){
 			return itemService.getParmaItemByItemId(itemId);
 		}
+		/**
+		 * 根据ids一次性删除多个商品  商品状态，1-正常，2-下架，3-删除
+		 * @param ids
+		 * @return
+		 */
+		@RequestMapping("/rest/item/delete")
+		@ResponseBody
+		public YouTuResult deleteItemByIds(String ids){
+			YouTuResult result = itemService.modifyItemsByIds(ids,(byte) 3);
+			return result;
+		}
+		/**
+		 * 根据ids一次性下架多个商品  商品状态，1-正常，2-下架，3-删除
+		 * @param ids
+		 * @return
+		 */
+		@RequestMapping("/rest/item/instock")
+		@ResponseBody
+		public YouTuResult instockItemByIds(String ids){
+			YouTuResult result = itemService.modifyItemsByIds(ids,(byte) 2);
+			return result;
+		}
+		/**
+		 * 根据ids一次性上架多个商品  商品状态，1-正常，2-下架，3-删除
+		 * @param ids
+		 * @return
+		 */
+		@RequestMapping("/rest/item/reshelf")
+		@ResponseBody
+		public YouTuResult reshelfItemByIds(String ids){
+			YouTuResult result = itemService.modifyItemsByIds(ids,(byte) 1);
+			return result;
+		}
 	}

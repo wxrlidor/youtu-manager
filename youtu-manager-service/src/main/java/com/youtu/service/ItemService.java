@@ -24,4 +24,6 @@ public interface ItemService {
 
 	YouTuResult getParmaItemByItemId(long itemId);
 
+	YouTuResult modifyItemsByIds(String ids, byte status);
+
 }
