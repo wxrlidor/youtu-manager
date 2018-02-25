@@ -12,6 +12,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.youtu.common.pojo.EasyUIDateGridResult;
 import com.youtu.common.pojo.YouTuResult;
+import com.youtu.common.utils.HttpClientUtil;
 import com.youtu.mapper.TbContentMapper;
 import com.youtu.pojo.TbContent;
 import com.youtu.pojo.TbContentExample;
@@ -39,6 +40,13 @@ public class ContentServiceImpl implements ContentService {
 		content.setUpdated(new Date());
 		contentMapper.insert(content);
 
+		// redis同步缓存
+		try {
+			HttpClientUtil.doGet(REST_BASE_URL + REST_CONTENT_SYNC_URL + content.getCategoryId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return YouTuResult.ok();
 	}
 
@@ -51,8 +59,8 @@ public class ContentServiceImpl implements ContentService {
 		com.youtu.pojo.TbContentExample.Criteria criteria = example.createCriteria();
 		criteria.andCategoryIdEqualTo(categoryId);
 		// 分页查询
-		PageHelper.startPage(page, rows); 
-		//使用withBLOBS方法，表示取数据时取出大文本数据
+		PageHelper.startPage(page, rows);
+		// 使用withBLOBS方法，表示取数据时取出大文本数据
 		List<TbContent> list = contentMapper.selectByExampleWithBLOBs(example);
 		// 取出总数
 		PageInfo<TbContent> pageInfo = new PageInfo<>(list);
@@ -73,6 +81,15 @@ public class ContentServiceImpl implements ContentService {
 		tbContent.setCreated(new Date());
 		// 更新数据，把大文本数据也更新进去
 		contentMapper.updateByPrimaryKeyWithBLOBs(tbContent);
+
+		// redis同步缓存
+		try {
+			String doGet = HttpClientUtil.doGet(REST_BASE_URL + REST_CONTENT_SYNC_URL + tbContent.getCategoryId());
+			System.out.println(doGet);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return YouTuResult.ok();
 	}
 
@@ -91,9 +108,19 @@ public class ContentServiceImpl implements ContentService {
 		TbContentExample example = new TbContentExample();
 		com.youtu.pojo.TbContentExample.Criteria criteria = example.createCriteria();
 		criteria.andIdIn(list);
+		//先查询出值然后再查出分类id用于同步缓存
+		List<TbContent> contentList = contentMapper.selectByExample(example);
 		// 根据id,删除多个数据
 		int num = contentMapper.deleteByExample(example);
 		if (num > 0) {
+			
+			//redis同步缓存
+			try {
+				HttpClientUtil.doGet(REST_BASE_URL + REST_CONTENT_SYNC_URL + contentList.get(0).getCategoryId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			return YouTuResult.ok();
 		}
 		return YouTuResult.build(500, "删除出错");
