@@ -1,4 +1,5 @@
 package com.youtu.service;
+import com.youtu.common.pojo.EasyUIDateGridResult;
 import com.youtu.common.pojo.YouTuResult;
 import com.youtu.pojo.TbContent;
 
@@ -9,5 +10,11 @@ import com.youtu.pojo.TbContent;
 **/
 public interface ContentService {
 	YouTuResult insertContent(TbContent content);
+
+	EasyUIDateGridResult getContentListByCategoryId(long categoryId, int page, int rows);
+
+	YouTuResult updateContent(TbContent tbContent);
+
+	YouTuResult deleteContentsByIds(String ids);
 
 }
