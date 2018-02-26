@@ -31,7 +31,7 @@
          	<li>
          		<span>订单信息管理</span>
          		<ul>
-	         		<li data-options="attributes:{'url':'order-list'}">订单管理</li>
+	         		<li data-options="attributes:{'url':'order-list'}">订单查询</li>
 	         	</ul>
          	</li>
          	<li>
