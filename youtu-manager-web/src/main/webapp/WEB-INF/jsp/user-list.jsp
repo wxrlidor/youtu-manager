@@ -39,11 +39,11 @@
     <thead>
         <tr>
         	<th data-options="field:'ck',checkbox:true"></th>
-        	<th data-options="field:'id',width:60">用户ID</th>
-            <th data-options="field:'username',width:100">用户名</th>
-            <th data-options="field:'phone',width:150">注册手机号</th>
-            <th data-options="field:'email',width:150">注册邮箱</th>
-            <th data-options="field:'nickname',width:100">昵称</th>
+        	<th data-options="field:'id',width:60,align:'center'">用户ID</th>
+            <th data-options="field:'username',width:150,align:'center'">用户名</th>
+            <th data-options="field:'phone',width:150,align:'center'">注册手机号</th>
+            <th data-options="field:'email',width:150,align:'center'">注册邮箱</th>
+            <th data-options="field:'nickname',width:100,align:'center'">昵称</th>
             <th data-options="field:'status',width:60,align:'center',formatter:TAOTAO.formatUserStatus">状态</th>
             <th data-options="field:'created',width:130,align:'center',formatter:TAOTAO.formatDateTime">创建日期</th>
             <th data-options="field:'updated',width:130,align:'center',formatter:TAOTAO.formatDateTime">更新日期</th>
