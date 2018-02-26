@@ -15,4 +15,8 @@ public interface ContentCategoryService {
 
 	YouTuResult insertContentCategory(Long parentId, String name);
 
+	YouTuResult deleteCategory(Long id);
+
+	YouTuResult updateCateory(Long id, String name);
+
 }
