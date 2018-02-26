@@ -298,7 +298,6 @@
       image = #{image,jdbcType=VARCHAR},
       cid = #{cid,jdbcType=BIGINT},
       status = #{status,jdbcType=TINYINT},
-      created = #{created,jdbcType=TIMESTAMP},
       updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>

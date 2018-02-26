@@ -42,7 +42,7 @@
             <th data-options="field:'paymentType',width:80,align:'center',formatter:TAOTAO.formatOrderPayType">支付类型</th>
             <th data-options="field:'post_fee',width:80,align:'center'">邮费</th>
             <th data-options="field:'status',width:110,align:'center',formatter:TAOTAO.formatOrderStatus">状态</th>
-            <th data-options="field:'createTime',width:130,align:'center',formatter:TAOTAO.formatDateTime">创建日期</th>
+            <!-- <th data-options="field:'createTime',width:130,align:'center',formatter:TAOTAO.formatDateTime">创建日期</th> -->
             <th data-options="field:'updateTime',width:130,align:'center',formatter:TAOTAO.formatDateTime">更新日期</th>
             <th data-options="field:'userId',width:100,align:'center'">买家id</th>
             <th data-options="field:'buyerNick',width:150,align:'center'">买家昵称</th>
