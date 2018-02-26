@@ -214,16 +214,19 @@ public class ItemServiceImpl implements ItemService {
 		tbItemDesc.setUpdated(new Date());
 		// 根据主键id更新
 		tbItemDescMapper.updateByPrimaryKeyWithBLOBs(tbItemDesc);
-
-		// 更新商品规格参数
-		TbItemParamItem tbItemParamItem = new TbItemParamItem();
-		// 补全规格参数实体类
-		tbItemParamItem.setParamData(itemParams);
-		tbItemParamItem.setId(Long.valueOf(itemParamId));
-		tbItemParamItem.setItemId(tbItem.getId());
-		tbItemParamItem.setUpdated(new Date());
-		// 根据主键id更新
-		tbItemParamItemMapper.updateByPrimaryKeyWithBLOBs(tbItemParamItem);
+		//有些商品是没有规格参数的，所以我们需要排除商品规格参数id为“”的情况
+		if(itemParamId!=""){
+			// 更新商品规格参数
+			TbItemParamItem tbItemParamItem = new TbItemParamItem();
+			// 补全规格参数实体类
+			tbItemParamItem.setParamData(itemParams);
+			tbItemParamItem.setId(Long.valueOf(itemParamId));
+			tbItemParamItem.setItemId(tbItem.getId());
+			tbItemParamItem.setUpdated(new Date());
+			// 根据主键id更新
+			tbItemParamItemMapper.updateByPrimaryKeyWithBLOBs(tbItemParamItem);
+		}
+		
 
 		return YouTuResult.ok();
 	}
