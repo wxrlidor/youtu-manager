@@ -108,6 +108,7 @@ public class ItemServiceImpl implements ItemService {
 			title = "%" + title + "%";
 			criteriaItem.andTitleLike(title);
 		}
+		tbItemExample.setOrderByClause("updated DESC");
 		PageHelper.startPage(page, rows);
 		List<TbItem> list = itemMapper.selectByExample(tbItemExample);
 		for (TbItem tbItem : list) {
