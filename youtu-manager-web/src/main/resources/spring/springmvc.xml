@@ -31,4 +31,19 @@
 	<!-- location:资源的实际位置   mapping：在服务器中的请求格式，只要是以下格式的请求，都会去被映射到资源的实际位置中去找资源 -->
 	<mvc:resources location="/WEB-INF/css/" mapping="/css/**"/>
 	<mvc:resources location="/WEB-INF/js/" mapping="/js/**"/>
+	<mvc:resources location="/WEB-INF/images/" mapping="/images/**"/>
+	
+	<!-- 拦截器配置 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!-- 拦截所有请求 -->
+			<mvc:mapping path="/*"/>
+			<bean class="com.youtu.interceptor.LoginInterceptor"/>
+		</mvc:interceptor>
+		<!-- <mvc:interceptor>
+			拦截购物车类请求
+			<mvc:mapping path="/cart/**"/>
+			<bean class="com.youtu.portal.interceptor.LoginInterceptor"/>
+		</mvc:interceptor> -->
+	</mvc:interceptors>
 </beans>

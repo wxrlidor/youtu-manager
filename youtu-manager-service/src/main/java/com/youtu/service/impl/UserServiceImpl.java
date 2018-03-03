@@ -1,18 +1,28 @@
 package com.youtu.service.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.youtu.common.pojo.EasyUIDateGridResult;
 import com.youtu.common.pojo.YouTuResult;
+import com.youtu.common.utils.CookieUtils;
+import com.youtu.mapper.TbAdminMapper;
 import com.youtu.mapper.TbUserMapper;
+import com.youtu.pojo.TbAdmin;
+import com.youtu.pojo.TbAdminExample;
 import com.youtu.pojo.TbUser;
 import com.youtu.pojo.TbUserExample;
 import com.youtu.pojo.TbUserExample.Criteria;
@@ -26,6 +36,8 @@ import com.youtu.service.UserService;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private TbUserMapper userMapper;
+	@Autowired
+	private TbAdminMapper adminMapper;
 
 	/**
 	 * 根据查询条件，查询出用户列表信息
@@ -59,6 +71,7 @@ public class UserServiceImpl implements UserService {
 		result.setTotal(sum);
 		return result;
 	}
+
 	/**
 	 * 根据ids一次性修改用户状态,用户状态，1-启用，2-注销
 	 */
@@ -86,13 +99,50 @@ public class UserServiceImpl implements UserService {
 			// 同时设置更新时间
 			tbUser.setUpdated(new Date());
 			// 然后再进行保存操作,更新方法会返回值,成功时返回受影响的行数
-			//mapper文件里面需要修改update方法，去掉创建时间的修改
+			// mapper文件里面需要修改update方法，去掉创建时间的修改
 			int result = userMapper.updateByPrimaryKey(tbUser);
 			if (result < 1) {// 说明更新失败,返回状态设置为非200
 				youTuResult.setStatus(100);
 			}
 		}
 		return youTuResult;
+	}
+
+	/**
+	 * 后台登录，验证密码后将信息写入cookie中
+	 * 
+	 * @param username
+	 * @param password
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@Override
+	public YouTuResult adminLogin(String username, String password, HttpServletRequest request, HttpServletResponse response) {
+		TbAdminExample example = new TbAdminExample();
+		com.youtu.pojo.TbAdminExample.Criteria criteria = example.createCriteria();
+		criteria.andUsernameEqualTo(username);
+		// 登陆时过滤掉已经被注销的用户
+		criteria.andStatusEqualTo((byte) 1);
+		List<TbAdmin> list = adminMapper.selectByExample(example);
+		// 如果没有此用户名
+		if (null == list || list.size() == 0) {
+			return YouTuResult.build(400, "用户名不存在");
+		}
+		TbAdmin admin = list.get(0);
+		// 比对密码
+		if (!DigestUtils.md5DigestAsHex(password.getBytes()).equals(admin.getPassword())) {
+			return YouTuResult.build(400, "密码错误");
+		}
+		// 生成token
+		//String token = UUID.randomUUID().toString();
+		//向cookie中写入token,关闭浏览器时失效
+		try {
+			CookieUtils.setCookie(request, response, "YOUTU_ADMIN", URLEncoder.encode(admin.getNickname(), "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return YouTuResult.ok(admin.getNickname());
 	}
 
 }

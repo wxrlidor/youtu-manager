@@ -2,10 +2,14 @@ package com.youtu.controller;
 
 import java.io.UnsupportedEncodingException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.youtu.common.pojo.EasyUIDateGridResult;
@@ -62,6 +66,20 @@ public class UserController {
 	@ResponseBody
 	public YouTuResult reshelfUserByIds(String ids){
 		YouTuResult result = userService.modifyUserStatusByIds(ids, (byte) 2);
+		return result;
+	}
+	/**
+	 * 后台登录
+	 * @param username
+	 * @param password
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value="/admin/login",method=RequestMethod.POST)
+	@ResponseBody
+	public YouTuResult adminLogin(String username, String password,HttpServletRequest request,HttpServletResponse response){
+		YouTuResult result =  userService.adminLogin(username, password, request, response);
 		return result;
 	}
 }
