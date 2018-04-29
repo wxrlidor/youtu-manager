@@ -226,6 +226,14 @@ public class ItemServiceImpl implements ItemService {
 			tbItemParamItem.setUpdated(new Date());
 			// 根据主键id更新
 			tbItemParamItemMapper.updateByPrimaryKeyWithBLOBs(tbItemParamItem);
+		}else{
+			TbItemParamItem tbItemParamItem = new TbItemParamItem();
+			// 补全规格参数实体类
+			tbItemParamItem.setParamData(itemParams);
+			tbItemParamItem.setCreated(new Date());
+			tbItemParamItem.setItemId(tbItem.getId());
+			tbItemParamItem.setUpdated(new Date());
+			tbItemParamItemMapper.insert(tbItemParamItem);
 		}
 		
 
